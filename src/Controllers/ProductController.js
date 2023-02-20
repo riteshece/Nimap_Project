@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const productModel = require('../Models/Product_Model');
-const categoryModel = require('../Models/Category_Model');
+const productModel = require('../Models/ProductModel');
+const categoryModel = require('../Models/CategoryModel');
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false
@@ -19,7 +19,7 @@ const createProduct = async function (req, res) {
         const { product_Name, category_Id, price, stock } = data;
 
         if (!isValid(product_Name)) {
-            return res.status(400).send({ status: false, message: 'Product name is required' })
+            return res.status(400).send({ status: false, message: 'Product_name is required' })
         }
 
         if (!isValid(category_Id)) {
@@ -27,20 +27,20 @@ const createProduct = async function (req, res) {
         }
 
         if (!isValidObjectId(category_Id)) {
-            return res.status(404).send({ status: false, message: "Invalid Id..!!" })
+            return res.status(404).send({ status: false, message: "Invalid Id" })
         }
 
         let category = await categoryModel.findById(category_Id)
         if (!category) {
-            return res.status(404).send({ status: falase, massage: "Category does not exist..!!" });
+            return res.status(404).send({ status: falase, massage: "Category  not found" });
         }
 
         if (!isValid(price)) {
-            return res.status(400).send({ status: false, message: 'price is required' })
+            return res.status(400).send({ status: false, message: 'Price is required' })
         }
 
         if (!isValid(stock)) {
-            return res.status(400).send({ status: false, message: 'stock is required' })
+            return res.status(400).send({ status: false, message: 'Stock is required' })
         }
 
         const newProduct = await productModel.create(data)
@@ -89,7 +89,7 @@ const updateProduct = async function (req, res) {
 
         const update = await productModel.findOneAndUpdate({ _id: id, is_Deleted: false }, { $set: data }, { new: true })
 
-        if (!update) return res.status(400).send({ status: false, message: "Product is Deleted..!!" })
+        if (!update) return res.status(400).send({ status: false, message: "Product is Successfully Deleted" })
 
         return res.status(200).send({ status: true, message: "Success", data: update })
     }
@@ -107,7 +107,7 @@ const deleteProduct = async function (req, res) {
             return res.status(404).send({ status: false, message: "Product not found" })
         }
 
-        const delProduct = await productModel.findByIdAndUpdate({ _id: productId, is_Deleted: false }, { is_Deleted: true }, { new: true })
+        const delProduct = await productModel.findByIdAndUpdate({ _id: productId}, { is_Deleted: true }, { upsert: true })
         res.status(200).send({ status: true, message: "success", data: delProduct })
 
     } catch (error) {

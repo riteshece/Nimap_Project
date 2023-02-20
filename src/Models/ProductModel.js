@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     product_Name: {
         type: String,
-        trim: true
+        trim: true,
+        required:true
     },
     category_Id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +18,7 @@ const productSchema = new mongoose.Schema({
     },
     id_Deleted: {
         type: Boolean,
-        default: false
+        //default: false
     }
 
 },{timestamps:true});

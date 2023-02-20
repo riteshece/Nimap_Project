@@ -1,20 +1,28 @@
 const express = require("express")
 const router = express.Router()
 
-const categoryController = require("./Controllers/Category_Controller");
-const productController = require("./Controllers/Product_Controller");
+const CategoryController = require("./Controllers/CategoryController");
+const ProductController = require("./Controllers/ProductController");
 
-// Category
-router.post('/category', categoryController.createCategory);
-router.get('/categories/:categoryId', categoryController.getCategorybyid);
-router.put("/categories/:categoryId",categoryController.updateCategory);
-router.delete("/categories/:categoryId",categoryController.deleteCategory);
+//********************* */ Category*******************************//
 
-// Product
-router.post('/product', productController.createProduct);
-router.get('/products/:productId', productController.getProductById);
-router.put('/products/:productId', productController.updateProduct);
-router.delete("/products/:productId", productController.deleteProduct);
-router.get('/products', productController.productsList);
+router.post('/category', CategoryController.createCategory);
+
+router.get('/categories/:categoryId', CategoryController.getCategorybyid);
+
+router.put("/categories/:categoryId",CategoryController.updateCategory);
+
+router.delete("/categories/:categoryId",CategoryController.deleteCategory);
+
+//**********************  */ Product*******************************//
+router.post('/product', ProductController.createProduct);
+
+router.get('/products/:productId', ProductController.getProductById);
+
+router.put('/products/:productId', ProductController.updateProduct);
+
+router.delete("/products/:productId", ProductController.deleteProduct);
+
+router.get('/products', ProductController.productsList);
 
 module.exports = router;

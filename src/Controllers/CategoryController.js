@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const categoryModel = require('../Models/Category_Model');
-const productModel = require('../Models/Product_Model');
+const CategoryModel = require('../Models/CategoryModel');
+
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false
@@ -22,7 +22,7 @@ const createCategory = async function (req, res) {
             return res.status(404).send({ status: false, message: "Category is required..!!" })
         };
 
-        const newCategory = await categoryModel.create(data)
+        const newCategory = await CategoryModel.create(data)
         res.status(201).send({ status: true, data: newCategory });
 
     } catch (error) {
@@ -39,7 +39,7 @@ const getCategorybyid = async function (req, res) {
             return res.status(404).send({ status: false, message: "Invalid Id..!!" })
         }
 
-        const category = await categoryModel.findById({ _id: categoryId })
+        const category = await CategoryModel.findById({ _id: categoryId })
         if (!category) { return res.status(404).send({ status: false, message: "No data found" }) }
 
         res.status(200).send({ status: true, data: category })
@@ -59,7 +59,7 @@ const updateCategory = async function (req, res) {
             return res.status(404).send({ status: false, message: "Invalid Id..!!" })
         }
 
-        const update = await categoryModel.findOneAndUpdate({ _id: id, isDeleted: false }, { $set: data }, { new: true })
+        const update = await CategoryModel.findOneAndUpdate({ _id: id, isDeleted: false }, { $set: data }, { new: true })
 
         if (!update) return res.status(400).send({ status: false, message: "category is Deleted" })
 
@@ -74,7 +74,7 @@ const deleteCategory = async function (req, res) {
     try {
         const { categoryId } = req.params
 
-        const category = await categoryModel.findById(categoryId)
+        const category = await CategoryModel.findById(categoryId)
         if (!category) {
             return res.status(404).send({ status: false, message: "Category not found..!!" })
         }
@@ -82,7 +82,7 @@ const deleteCategory = async function (req, res) {
             return res.status(400).send({ status: false, message: "Category is already deleted..!!" })
         }
 
-        let delCategory = await categoryModel.findOneAndUpdate({ _id: categoryId }, { $set: { isDeleted: true } }, { new: true })
+        let delCategory = await CategoryModel.findOneAndUpdate({ _id: categoryId }, { $set: { isDeleted: true } }, { new: true })
 
         res.status(200).send({ status: true, message: "success", data: delCategory })
     } catch (error) {

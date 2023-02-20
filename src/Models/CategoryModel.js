@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({
     categoryName: { 
         type: String, 
-        trim: true 
+        trim: true,
+        required:true
     },
     isDeleted: { 
         type: Boolean, 
